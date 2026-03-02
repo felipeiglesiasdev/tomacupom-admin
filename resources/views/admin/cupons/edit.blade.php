@@ -1,0 +1,1 @@
+<x-admin.layouts.app title="EDITAR CUPOM" header="EDITAR CUPOM"><form method="POST" action="{{ route('admin.cupons.update', $cupom) }}" class="bg-white border rounded p-4 space-y-4">@csrf @method('PUT') @include('admin.cupons._form')<button class="bg-slate-900 text-white rounded px-4 py-2">ATUALIZAR</button></form></x-admin.layouts.app>

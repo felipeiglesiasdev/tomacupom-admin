@@ -1,0 +1,1 @@
+<x-admin.layouts.app title="NOVO CUPOM" header="NOVO CUPOM"><form method="POST" action="{{ route('admin.cupons.store') }}" class="bg-white border rounded p-4 space-y-4">@csrf @include('admin.cupons._form')<button class="bg-slate-900 text-white rounded px-4 py-2">SALVAR</button></form></x-admin.layouts.app>
