@@ -1,0 +1,1 @@
+<x-layouts.app title="NOVA OFERTA" header="NOVA OFERTA"><form method="POST" action="{{ route('admin.ofertas.store') }}" class="bg-white border rounded p-4 space-y-4">@csrf @include('ofertas._form')<button class="bg-slate-900 text-white rounded px-4 py-2">SALVAR</button></form></x-layouts.app>

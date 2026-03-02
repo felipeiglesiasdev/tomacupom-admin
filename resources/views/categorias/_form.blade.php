@@ -1,0 +1,1 @@
+<div class="grid gap-3"><input name="nome" value="{{ old('nome', $categoria->nome ?? '') }}" placeholder="NOME" class="border rounded px-3 py-2" required><input name="slug" value="{{ old('slug', $categoria->slug ?? '') }}" placeholder="SLUG" class="border rounded px-3 py-2" required></div>
