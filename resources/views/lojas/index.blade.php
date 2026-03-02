@@ -177,8 +177,8 @@
                                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Identidade Visual da Loja</p>
                                     <div class="flex items-start md:items-center gap-4 flex-col md:flex-row">
                                         @if($loja->logo_image_link)
-                                            <div class="w-16 h-16 rounded-lg border border-gray-200 bg-white shadow-sm flex-shrink-0 p-1 flex items-center justify-center">
-                                                <img src="{{ $loja->logo_image_link }}" alt="{{ $loja->alt_text_logo }}" class="max-w-full max-h-full object-contain">
+                                            <div class="flex items-center justify-center">
+                                                <img src="{{ $loja->logo_image_link }}" alt="{{ $loja->alt_text_logo }}" class="w-14 h-14 object-contain rounded-xl flex-shrink-0">
                                             </div>
                                             <div class="space-y-1">
                                                 <p class="text-xs font-semibold text-gray-500 uppercase">Link da Imagem</p>
