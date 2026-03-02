@@ -32,7 +32,7 @@ class LojaCategoriaController extends Controller
             ->ordenadas()
             ->get();
 
-        return view('admin.lojas.categorias-edit', [
+        return view('lojas.categorias-edit', [
             'loja' => $loja,
             'categorias' => $categorias,
         ]);

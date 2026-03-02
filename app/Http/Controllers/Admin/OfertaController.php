@@ -33,7 +33,7 @@ class OfertaController extends Controller
             $query->whereBetween('data_expiracao', [now()->toDateString(), now()->addDays(7)->toDateString()]);
         }
 
-        return view('admin.ofertas.index', [
+        return view('ofertas.index', [
             'ofertas' => $query->paginate(15)->withQueryString(),
             'lojas' => Loja::query()->select(['id_loja', 'nome'])->ordenadas()->get(),
         ]);
@@ -41,7 +41,7 @@ class OfertaController extends Controller
 
     public function create(): View
     {
-        return view('admin.ofertas.create', ['lojas' => Loja::query()->select(['id_loja', 'nome'])->ordenadas()->get()]);
+        return view('ofertas.create', ['lojas' => Loja::query()->select(['id_loja', 'nome'])->ordenadas()->get()]);
     }
 
     public function store(StoreOfertaRequest $request): RedirectResponse
@@ -53,7 +53,7 @@ class OfertaController extends Controller
 
     public function edit(Oferta $oferta): View
     {
-        return view('admin.ofertas.edit', ['oferta' => $oferta, 'lojas' => Loja::query()->select(['id_loja', 'nome'])->ordenadas()->get()]);
+        return view('ofertas.edit', ['oferta' => $oferta, 'lojas' => Loja::query()->select(['id_loja', 'nome'])->ordenadas()->get()]);
     }
 
     public function update(UpdateOfertaRequest $request, Oferta $oferta): RedirectResponse

@@ -14,7 +14,7 @@ class LojaSeoController extends Controller
     {
         $seo = $loja->seo()->firstOrCreate(['id_loja' => $loja->id_loja]);
 
-        return view('admin.lojas.seo-edit', compact('loja', 'seo'));
+        return view('lojas.seo-edit', compact('loja', 'seo'));
     }
 
     public function update(UpdateLojaSeoRequest $request, Loja $loja): RedirectResponse

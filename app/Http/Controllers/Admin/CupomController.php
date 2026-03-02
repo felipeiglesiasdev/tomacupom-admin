@@ -76,7 +76,7 @@ class CupomController extends Controller
             ->ordenadas()
             ->get();
 
-        return view('admin.cupons.index', [
+        return view('cupons.index', [
             'cupons' => $query->paginate(15)->withQueryString(),
             'lojas' => $lojas,
         ]);
@@ -88,7 +88,7 @@ class CupomController extends Controller
 
     public function create(): View
     {
-        return view('admin.cupons.create', [
+        return view('cupons.create', [
             'lojas' => Loja::query()->select(['ID_LOJA', 'NOME'])->ordenadas()->get(),
         ]);
     }
@@ -116,7 +116,7 @@ class CupomController extends Controller
 
     public function edit(Cupom $cupom): View
     {
-        return view('admin.cupons.edit', [
+        return view('cupons.edit', [
             'cupom' => $cupom,
             'lojas' => Loja::query()->select(['ID_LOJA', 'NOME'])->ordenadas()->get(),
         ]);

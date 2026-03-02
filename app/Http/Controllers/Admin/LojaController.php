@@ -25,12 +25,12 @@ class LojaController extends Controller
             $query->where(fn ($inner) => $inner->where('nome', 'like', $term)->orWhere('slug', 'like', $term));
         }
 
-        return view('admin.lojas.index', ['lojas' => $query->paginate(15)->withQueryString()]);
+        return view('lojas.index', ['lojas' => $query->paginate(15)->withQueryString()]);
     }
 
     public function create(): View
     {
-        return view('admin.lojas.create');
+        return view('lojas.create');
     }
 
     public function store(StoreLojaRequest $request): RedirectResponse
@@ -43,7 +43,7 @@ class LojaController extends Controller
 
     public function edit(Loja $loja): View
     {
-        return view('admin.lojas.edit', compact('loja'));
+        return view('lojas.edit', compact('loja'));
     }
 
     public function update(UpdateLojaRequest $request, Loja $loja): RedirectResponse

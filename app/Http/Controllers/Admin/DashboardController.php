@@ -27,7 +27,7 @@ class DashboardController extends Controller
         $totalCategorias = Categoria::query()->count();
 
 
-        return view('admin.dashboard', [
+        return view('dashboard', [
             'totalLojasAtivas' => $totalLojasAtivas,
             'totalCuponsAtivos' => $totalCuponsAtivos,
             'totalOfertasAtivas' => $totalOfertasAtivas,

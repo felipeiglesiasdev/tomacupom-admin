@@ -44,7 +44,7 @@ class CategoriaController extends Controller
         // RETORNO COM PAGINACAO
         // ===================================================
 
-        return view('admin.categorias.index', [
+        return view('categorias.index', [
             'categorias' => $query->paginate(15)->withQueryString(),
         ]);
     }
@@ -55,7 +55,7 @@ class CategoriaController extends Controller
 
     public function create(): View
     {
-        return view('admin.categorias.create');
+        return view('categorias.create');
     }
 
     // ===================================================
@@ -81,7 +81,7 @@ class CategoriaController extends Controller
 
     public function edit(Categoria $categoria): View
     {
-        return view('admin.categorias.edit', compact('categoria'));
+        return view('categorias.edit', compact('categoria'));
     }
 
     // ===================================================
