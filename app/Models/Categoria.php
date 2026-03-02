@@ -11,27 +11,59 @@ class Categoria extends Model
 {
     use HasFactory;
 
-    protected $connection = 'mysql_app';
+    // ===================================================
+    // DEFINICAO DA CONEXAO DO BANCO DE DADOS PRINCIPAL
+    // ===================================================
 
-    protected $table = 'categorias';
+    protected $connection = 'mysql_dados';
 
-    protected $primaryKey = 'id_categoria';
+    // ===================================================
+    // DEFINICAO DA TABELA (CASE SENSITIVE)
+    // ===================================================
+
+    protected $table = 'CATEGORIAS';
+
+    // ===================================================
+    // CHAVE PRIMARIA PERSONALIZADA
+    // ===================================================
+
+    protected $primaryKey = 'ID_CATEGORIA';
+
+    // ===================================================
+    // TABELA POSSUI TIMESTAMPS? NAO (NAO EXISTE UPDATED_AT)
+    // ===================================================
 
     public $timestamps = false;
 
+    // ===================================================
+    // CAMPOS QUE PODEM SER ATRIBUIDOS EM MASSA
+    // ===================================================
+
     protected $fillable = [
-        'nome',
-        'slug',
+        'NOME',
+        'SLUG',
     ];
+
+    // ===================================================
+    // RELACIONAMENTO N:N COM LOJAS
+    // ===================================================
 
     public function lojas(): BelongsToMany
     {
-        return $this->belongsToMany(Loja::class, 'loja_categoria', 'id_categoria', 'id_loja')
-            ->withTimestamps();
+        return $this->belongsToMany(
+            Loja::class,
+            'LOJA_CATEGORIA',
+            'ID_CATEGORIA',
+            'ID_LOJA'
+        )->withTimestamps();
     }
+
+    // ===================================================
+    // SCOPE PARA ORDENAR POR NOME
+    // ===================================================
 
     public function scopeOrdenadas(Builder $query): Builder
     {
-        return $query->orderBy('nome');
+        return $query->orderBy('NOME');
     }
 }

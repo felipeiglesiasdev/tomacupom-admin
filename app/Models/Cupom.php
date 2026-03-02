@@ -11,49 +11,91 @@ class Cupom extends Model
 {
     use HasFactory;
 
-    protected $connection = 'mysql_app';
+    // ===================================================
+    // DEFINICAO DA CONEXAO DO BANCO PRINCIPAL
+    // ===================================================
 
-    protected $table = 'cupons';
+    protected $connection = 'mysql_dados';
 
-    protected $primaryKey = 'id_cupom';
+    // ===================================================
+    // DEFINICAO DA TABELA (CASE SENSITIVE)
+    // ===================================================
+
+    protected $table = 'CUPONS';
+
+    // ===================================================
+    // CHAVE PRIMARIA PERSONALIZADA
+    // ===================================================
+
+    protected $primaryKey = 'ID_CUPOM';
+
+    // ===================================================
+    // CAMPOS ATRIBUIVEIS EM MASSA
+    // ===================================================
 
     protected $fillable = [
-        'id_loja',
-        'titulo',
-        'descricao',
-        'regras',
-        'codigo',
-        'tipo',
-        'link_redirecionamento',
-        'data_inicio',
-        'data_expiracao',
-        'status',
+        'ID_LOJA',
+        'TITULO',
+        'DESCRICAO',
+        'REGRAS',
+        'CODIGO',
+        'TIPO',
+        'LINK_REDIRECIONAMENTO',
+        'DATA_INICIO',
+        'DATA_EXPIRACAO',
+        'STATUS',
     ];
+
+    // ===================================================
+    // RELACIONAMENTO: CUPOM PERTENCE A UMA LOJA
+    // ===================================================
 
     public function loja(): BelongsTo
     {
-        return $this->belongsTo(Loja::class, 'id_loja', 'id_loja');
+        return $this->belongsTo(
+            Loja::class,
+            'ID_LOJA',
+            'ID_LOJA'
+        );
     }
+
+    // ===================================================
+    // SCOPE: APENAS CUPONS ATIVOS
+    // ===================================================
 
     public function scopeAtivas(Builder $query): Builder
     {
-        return $query->where('status', 1);
+        return $query->where('STATUS', 1);
     }
+
+    // ===================================================
+    // SCOPE: CUPONS VIGENTES (NAO EXPIRADOS)
+    // ===================================================
 
     public function scopeVigentes(Builder $query): Builder
     {
         return $query->where(function (Builder $inner): void {
-            $inner->whereNull('data_expiracao')->orWhereDate('data_expiracao', '>=', now()->toDateString());
+            $inner
+                ->whereNull('DATA_EXPIRACAO')
+                ->orWhereDate('DATA_EXPIRACAO', '>=', now()->toDateString());
         });
     }
 
+    // ===================================================
+    // SCOPE: CUPONS EXPIRADOS
+    // ===================================================
+
     public function scopeExpiradas(Builder $query): Builder
     {
-        return $query->whereDate('data_expiracao', '<', now()->toDateString());
+        return $query->whereDate('DATA_EXPIRACAO', '<', now()->toDateString());
     }
+
+    // ===================================================
+    // SCOPE: ORDENAR POR DATA DE CRIACAO DESC
+    // ===================================================
 
     public function scopeOrdenadas(Builder $query): Builder
     {
-        return $query->orderByDesc('created_at');
+        return $query->orderByDesc('CREATED_AT');
     }
 }

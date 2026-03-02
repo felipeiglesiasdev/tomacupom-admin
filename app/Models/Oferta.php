@@ -11,47 +11,89 @@ class Oferta extends Model
 {
     use HasFactory;
 
-    protected $connection = 'mysql_app';
+    // ===================================================
+    // DEFINICAO DA CONEXAO DO BANCO PRINCIPAL
+    // ===================================================
 
-    protected $table = 'ofertas';
+    protected $connection = 'mysql_dados';
 
-    protected $primaryKey = 'id_oferta';
+    // ===================================================
+    // DEFINICAO DA TABELA (CASE SENSITIVE)
+    // ===================================================
+
+    protected $table = 'OFERTAS';
+
+    // ===================================================
+    // CHAVE PRIMARIA PERSONALIZADA
+    // ===================================================
+
+    protected $primaryKey = 'ID_OFERTA';
+
+    // ===================================================
+    // CAMPOS ATRIBUIVEIS EM MASSA
+    // ===================================================
 
     protected $fillable = [
-        'id_loja',
-        'titulo',
-        'descricao',
-        'link_oferta',
-        'imagem_oferta',
-        'data_inicio',
-        'data_expiracao',
-        'status',
+        'ID_LOJA',
+        'TITULO',
+        'DESCRICAO',
+        'LINK_OFERTA',
+        'IMAGEM_OFERTA',
+        'DATA_INICIO',
+        'DATA_EXPIRACAO',
+        'STATUS',
     ];
+
+    // ===================================================
+    // RELACIONAMENTO: OFERTA PERTENCE A UMA LOJA
+    // ===================================================
 
     public function loja(): BelongsTo
     {
-        return $this->belongsTo(Loja::class, 'id_loja', 'id_loja');
+        return $this->belongsTo(
+            Loja::class,
+            'ID_LOJA',
+            'ID_LOJA'
+        );
     }
+
+    // ===================================================
+    // SCOPE: APENAS OFERTAS ATIVAS
+    // ===================================================
 
     public function scopeAtivas(Builder $query): Builder
     {
-        return $query->where('status', 1);
+        return $query->where('STATUS', 1);
     }
+
+    // ===================================================
+    // SCOPE: OFERTAS VIGENTES (NAO EXPIRADAS)
+    // ===================================================
 
     public function scopeVigentes(Builder $query): Builder
     {
         return $query->where(function (Builder $inner): void {
-            $inner->whereNull('data_expiracao')->orWhereDate('data_expiracao', '>=', now()->toDateString());
+            $inner
+                ->whereNull('DATA_EXPIRACAO')
+                ->orWhereDate('DATA_EXPIRACAO', '>=', now()->toDateString());
         });
     }
 
+    // ===================================================
+    // SCOPE: OFERTAS EXPIRADAS
+    // ===================================================
+
     public function scopeExpiradas(Builder $query): Builder
     {
-        return $query->whereDate('data_expiracao', '<', now()->toDateString());
+        return $query->whereDate('DATA_EXPIRACAO', '<', now()->toDateString());
     }
+
+    // ===================================================
+    // SCOPE: ORDENAR POR DATA DE CRIACAO DESC
+    // ===================================================
 
     public function scopeOrdenadas(Builder $query): Builder
     {
-        return $query->orderByDesc('created_at');
+        return $query->orderByDesc('CREATED_AT');
     }
 }

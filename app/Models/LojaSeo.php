@@ -10,24 +10,52 @@ class LojaSeo extends Model
 {
     use HasFactory;
 
-    protected $connection = 'mysql_app';
+    // ===================================================
+    // DEFINICAO DA CONEXAO DO BANCO PRINCIPAL
+    // ===================================================
 
-    protected $table = 'lojas_seo';
+    protected $connection = 'mysql_dados';
 
-    protected $primaryKey = 'id_loja';
+    // ===================================================
+    // DEFINICAO DA TABELA (CASE SENSITIVE)
+    // ===================================================
+
+    protected $table = 'LOJAS_SEO';
+
+    // ===================================================
+    // CHAVE PRIMARIA (PK = FK)
+    // ===================================================
+
+    protected $primaryKey = 'ID_LOJA';
+
+    // ===================================================
+    // NAO E AUTO INCREMENT (PK VEM DA LOJA)
+    // ===================================================
 
     public $incrementing = false;
 
+    // ===================================================
+    // CAMPOS ATRIBUIVEIS EM MASSA
+    // ===================================================
+
     protected $fillable = [
-        'id_loja',
-        'title_seo',
-        'description_seo',
-        'keywords_seo',
-        'text_content_seo',
+        'ID_LOJA',
+        'TITLE_SEO',
+        'DESCRIPTION_SEO',
+        'KEYWORDS_SEO',
+        'TEXT_CONTENT_SEO',
     ];
+
+    // ===================================================
+    // RELACIONAMENTO: SEO PERTENCE A UMA LOJA
+    // ===================================================
 
     public function loja(): BelongsTo
     {
-        return $this->belongsTo(Loja::class, 'id_loja', 'id_loja');
+        return $this->belongsTo(
+            Loja::class,
+            'ID_LOJA',
+            'ID_LOJA'
+        );
     }
 }

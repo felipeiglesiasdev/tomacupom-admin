@@ -63,16 +63,17 @@ return [
             ]) : [],
         ],
 
-        'mysql_app' => [
+        'mysql_dados' => [
             'driver' => 'mysql',
-            'host' => env('DB_APP_HOST', '127.0.0.1'),
-            'port' => env('DB_APP_PORT', '3306'),
-            'database' => env('DB_APP_DATABASE', 'tomacupom_app'), // Banco de dados da aplicação
-            'username' => env('DB_APP_USERNAME', 'root'),
-            'password' => env('DB_APP_PASSWORD', ''),
-            'unix_socket' => env('DB_APP_SOCKET', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
+            'url' => env('DB_DADOS_URL'),
+            'host' => env('DB_DADOS_HOST', '127.0.0.1'),
+            'port' => env('DB_DADOS_PORT', '3306'),
+            'database' => env('DB_DADOS_DATABASE', 'laravel'),
+            'username' => env('DB_DADOS_USERNAME', 'root'),
+            'password' => env('DB_DADOS_PASSWORD', ''),
+            'unix_socket' => env('DB_DADOS_SOCKET', ''),
+            'charset' => env('DB_DADOS_CHARSET', 'utf8mb4'),
+            'collation' => env('DB_DADOS_COLLATION', 'utf8mb4_unicode_ci'),
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,

@@ -13,58 +13,92 @@ class Loja extends Model
 {
     use HasFactory;
 
-    protected $connection = 'mysql_app';
+    // ===================================================
+    // DEFINICAO DA CONEXAO DO BANCO PRINCIPAL
+    // ===================================================
 
-    protected $table = 'lojas';
+    protected $connection = 'mysql_dados';
 
-    protected $primaryKey = 'id_loja';
+    // ===================================================
+    // DEFINICAO DA TABELA (CASE SENSITIVE)
+    // ===================================================
+
+    protected $table = 'LOJAS';
+
+    // ===================================================
+    // CHAVE PRIMARIA PERSONALIZADA
+    // ===================================================
+
+    protected $primaryKey = 'ID_LOJA';
+
+    // ===================================================
+    // CAMPOS ATRIBUIVEIS EM MASSA
+    // ===================================================
 
     protected $fillable = [
-        'nome',
-        'slug',
-        'titulo_pagina',
-        'descricao_pagina',
-        'url_site',
-        'url_base_afiliado',
-        'logo_image_link',
-        'alt_text_logo',
-        'status',
+        'NOME',
+        'SLUG',
+        'TITULO_PAGINA',
+        'DESCRICAO_PAGINA',
+        'URL_SITE',
+        'URL_BASE_AFILIADO',
+        'LOGO_IMAGE_LINK',
+        'ALT_TEXT_LOGO',
+        'STATUS',
     ];
 
     // ===================================================
     // RELACIONAMENTOS
     // ===================================================
+
     public function seo(): HasOne
     {
-        return $this->hasOne(LojaSeo::class, 'id_loja', 'id_loja');
+        return $this->hasOne(
+            LojaSeo::class,
+            'ID_LOJA',
+            'ID_LOJA'
+        );
     }
 
     public function cupons(): HasMany
     {
-        return $this->hasMany(Cupom::class, 'id_loja', 'id_loja');
+        return $this->hasMany(
+            Cupom::class,
+            'ID_LOJA',
+            'ID_LOJA'
+        );
     }
 
     public function ofertas(): HasMany
     {
-        return $this->hasMany(Oferta::class, 'id_loja', 'id_loja');
+        return $this->hasMany(
+            Oferta::class,
+            'ID_LOJA',
+            'ID_LOJA'
+        );
     }
 
     public function categorias(): BelongsToMany
     {
-        return $this->belongsToMany(Categoria::class, 'loja_categoria', 'id_loja', 'id_categoria')
-            ->withTimestamps();
+        return $this->belongsToMany(
+            Categoria::class,
+            'LOJA_CATEGORIA',
+            'ID_LOJA',
+            'ID_CATEGORIA'
+        )->withTimestamps();
     }
 
     // ===================================================
     // SCOPES
     // ===================================================
+
     public function scopeAtivas(Builder $query): Builder
     {
-        return $query->where('status', 1);
+        return $query->where('STATUS', 1);
     }
 
     public function scopeOrdenadas(Builder $query): Builder
     {
-        return $query->orderBy('nome');
+        return $query->orderBy('NOME');
     }
 }

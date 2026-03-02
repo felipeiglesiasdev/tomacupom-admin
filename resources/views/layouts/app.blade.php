@@ -28,10 +28,10 @@
         </header>
         <section class="p-4 md:p-6">
             @if(session('success'))
-                <x-admin.components.alert type="success" :message="session('success')" />
+                <x-admin.alert type="success" :message="session('success')" />
             @endif
             @if($errors->any())
-                <x-admin.components.alert type="error" :message="$errors->first()" />
+                <x-admin.alert type="error" :message="$errors->first()" />
             @endif
             {{ $slot }}
         </section>
