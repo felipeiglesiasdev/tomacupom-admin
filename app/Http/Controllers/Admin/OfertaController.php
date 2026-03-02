@@ -15,7 +15,7 @@ class OfertaController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = Oferta::query()->select(['id_oferta', 'id_loja', 'titulo', 'status', 'data_expiracao', 'cliques'])->with('loja:id_loja,nome')->ordenadas();
+        $query = Oferta::query()->select(['id_oferta', 'id_loja', 'titulo', 'status', 'data_expiracao'])->with('loja:id_loja,nome')->ordenadas();
 
         if ($request->filled('id_loja')) {
             $query->where('id_loja', (int) $request->string('id_loja'));

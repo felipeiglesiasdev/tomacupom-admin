@@ -16,7 +16,7 @@ class CupomController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = Cupom::query()->select(['id_cupom', 'id_loja', 'titulo', 'codigo', 'status', 'data_expiracao', 'cliques'])->with('loja:id_loja,nome')->ordenadas();
+        $query = Cupom::query()->select(['id_cupom', 'id_loja', 'titulo', 'codigo', 'status', 'data_expiracao'])->with('loja:id_loja,nome')->ordenadas();
 
         if ($request->filled('id_loja')) {
             $query->where('id_loja', (int) $request->string('id_loja'));
@@ -76,7 +76,6 @@ class CupomController extends Controller
         DB::connection('mysql_app')->transaction(function () use ($cupom): void {
             $copy = $cupom->replicate();
             $copy->titulo = $cupom->titulo.' (COPIA)';
-            $copy->cliques = 0;
             $copy->created_at = now();
             $copy->updated_at = now();
             $copy->save();

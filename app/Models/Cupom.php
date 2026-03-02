@@ -28,7 +28,6 @@ class Cupom extends Model
         'data_inicio',
         'data_expiracao',
         'status',
-        'cliques',
     ];
 
     public function loja(): BelongsTo

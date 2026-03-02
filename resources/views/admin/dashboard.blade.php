@@ -4,6 +4,5 @@
         <x-admin.components.card label="CUPONS ATIVOS" :value="$totalCuponsAtivos" />
         <x-admin.components.card label="OFERTAS ATIVAS" :value="$totalOfertasAtivas" />
         <x-admin.components.card label="CATEGORIAS" :value="$totalCategorias" />
-        <x-admin.components.card label="TOTAL CLIQUES" :value="$totalCliques" />
     </div>
 </x-admin.layouts.app>

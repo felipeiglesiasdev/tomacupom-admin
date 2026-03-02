@@ -18,7 +18,6 @@ class DashboardController extends Controller
             'totalCuponsAtivos' => Cupom::query()->ativas()->count(),
             'totalOfertasAtivas' => Oferta::query()->ativas()->count(),
             'totalCategorias' => Categoria::query()->count(),
-            'totalCliques' => Cupom::query()->sum('cliques') + Oferta::query()->sum('cliques'),
         ]);
     }
 }

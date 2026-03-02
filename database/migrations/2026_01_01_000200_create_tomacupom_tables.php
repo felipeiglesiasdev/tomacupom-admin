@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('logo_image_link', 255)->nullable();
             $table->string('alt_text_logo', 255)->nullable();
             $table->unsignedTinyInteger('status')->default(1);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->index('status');
             $table->index('nome');
         });
@@ -32,7 +33,8 @@ return new class extends Migration
             $table->text('description_seo')->nullable();
             $table->text('keywords_seo')->nullable();
             $table->longText('text_content_seo')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->foreign('id_loja')->references('id_loja')->on('lojas')->cascadeOnDelete();
         });
 
@@ -48,10 +50,13 @@ return new class extends Migration
             $table->date('data_inicio')->nullable();
             $table->date('data_expiracao')->nullable();
             $table->unsignedTinyInteger('status')->default(1);
-            $table->unsignedBigInteger('cliques')->default(0);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->index(['id_loja', 'status']);
             $table->index(['id_loja', 'data_expiracao']);
+            $table->index(['status', 'data_expiracao']);
+            $table->index('data_expiracao');
+            $table->index('codigo');
         });
 
         Schema::connection($this->connection)->create('ofertas', function (Blueprint $table): void {
@@ -64,10 +69,12 @@ return new class extends Migration
             $table->date('data_inicio')->nullable();
             $table->date('data_expiracao')->nullable();
             $table->unsignedTinyInteger('status')->default(1);
-            $table->unsignedBigInteger('cliques')->default(0);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->index(['id_loja', 'status']);
             $table->index(['id_loja', 'data_expiracao']);
+            $table->index(['status', 'data_expiracao']);
+            $table->index('data_expiracao');
         });
 
         Schema::connection($this->connection)->create('categorias', function (Blueprint $table): void {
