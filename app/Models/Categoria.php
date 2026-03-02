@@ -18,44 +18,45 @@ class Categoria extends Model
     protected $connection = 'mysql_dados';
 
     // ===================================================
-    // DEFINICAO DA TABELA (CASE SENSITIVE)
+    // DEFINICAO DA TABELA
     // ===================================================
 
-    protected $table = 'CATEGORIAS';
+    protected $table = 'categorias';
 
     // ===================================================
     // CHAVE PRIMARIA PERSONALIZADA
     // ===================================================
 
-    protected $primaryKey = 'ID_CATEGORIA';
+    protected $primaryKey = 'id_categoria';
 
     // ===================================================
-    // TABELA POSSUI TIMESTAMPS? NAO (NAO EXISTE UPDATED_AT)
+    // CATEGORIAS NAO TEM created_at/updated_at
     // ===================================================
 
     public $timestamps = false;
 
     // ===================================================
-    // CAMPOS QUE PODEM SER ATRIBUIDOS EM MASSA
+    // CAMPOS ATRIBUIVEIS EM MASSA
     // ===================================================
 
     protected $fillable = [
-        'NOME',
-        'SLUG',
+        'nome',
+        'slug',
     ];
 
     // ===================================================
     // RELACIONAMENTO N:N COM LOJAS
+    // OBS: NAO USAR withTimestamps() POIS A PIVOT TEM APENAS created_at
     // ===================================================
 
     public function lojas(): BelongsToMany
     {
         return $this->belongsToMany(
             Loja::class,
-            'LOJA_CATEGORIA',
-            'ID_CATEGORIA',
-            'ID_LOJA'
-        )->withTimestamps();
+            'loja_categoria',
+            'id_categoria',
+            'id_loja'
+        );
     }
 
     // ===================================================
@@ -64,6 +65,6 @@ class Categoria extends Model
 
     public function scopeOrdenadas(Builder $query): Builder
     {
-        return $query->orderBy('NOME');
+        return $query->orderBy('nome');
     }
 }

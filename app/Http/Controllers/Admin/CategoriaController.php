@@ -20,11 +20,11 @@ class CategoriaController extends Controller
     public function index(Request $request): View
     {
         // ===================================================
-        // QUERY BASE (CAMPOS EM MAIUSCULO POR CAUSA DO BANCO)
+        // QUERY BASE
         // ===================================================
 
         $query = Categoria::query()
-            ->select(['ID_CATEGORIA', 'NOME', 'SLUG'])
+            ->select(['id_categoria', 'nome', 'slug'])
             ->ordenadas();
 
         // ===================================================
@@ -35,14 +35,10 @@ class CategoriaController extends Controller
             $term = '%' . trim((string) $request->input('busca')) . '%';
 
             $query->where(function (Builder $inner) use ($term): void {
-                $inner->where('NOME', 'LIKE', $term)
-                    ->orWhere('SLUG', 'LIKE', $term);
+                $inner->where('nome', 'like', $term)
+                      ->orWhere('slug', 'like', $term);
             });
         }
-
-        // ===================================================
-        // RETORNO COM PAGINACAO
-        // ===================================================
 
         return view('categorias.index', [
             'categorias' => $query->paginate(15)->withQueryString(),
@@ -64,10 +60,6 @@ class CategoriaController extends Controller
 
     public function store(StoreCategoriaRequest $request): RedirectResponse
     {
-        // ===================================================
-        // CRIACAO (REQUEST DEVE RETORNAR CHAVES EM MAIUSCULO)
-        // ===================================================
-
         Categoria::query()->create($request->validated());
 
         return redirect()
@@ -90,10 +82,6 @@ class CategoriaController extends Controller
 
     public function update(UpdateCategoriaRequest $request, Categoria $categoria): RedirectResponse
     {
-        // ===================================================
-        // UPDATE (REQUEST DEVE RETORNAR CHAVES EM MAIUSCULO)
-        // ===================================================
-
         $categoria->update($request->validated());
 
         return redirect()

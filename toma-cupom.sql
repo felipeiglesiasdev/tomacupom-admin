@@ -1,136 +1,134 @@
 -- ===================================================
--- BANCO DE DADOS: TOMA CUPOM
+-- BANCO DE DADOS: TOMA CUPOM (MINUSCULO)
 -- ===================================================
 
 -- =========================
--- TABELA: LOJAS
+-- TABELA: lojas
 -- =========================
-CREATE TABLE LOJAS (
-    ID_LOJA                 BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,                 -- ID DA LOJA
-    NOME                    VARCHAR(150) NOT NULL,                                       -- NOME DA LOJA (EX.: ADIDAS)
-    SLUG                    VARCHAR(160) NOT NULL,                                       -- SLUG PARA URL (EX.: ADIDAS) /LOJA/ADIDAS
-    TITULO_PAGINA           VARCHAR(255) NOT NULL,                                       -- TITULO H1 DA PAGINA (EX.: CUPONS ADIDAS)
-    DESCRICAO_PAGINA        VARCHAR(255) NOT NULL,                                       -- DESCRICAO DO HEADER (EX.: ENCONTRE OS MELHORES CUPONS...)
-    URL_SITE                VARCHAR(255) NULL,                                           -- URL DO SITE DA LOJA (NAO AFILIADO)
-    URL_BASE_AFILIADO       VARCHAR(255) NULL,                                           -- URL BASE DE AFILIADO (SEM ROTAS)
-    LOGO_IMAGE_LINK         VARCHAR(255) NULL,                                           -- LINK DO LOGO (RAPIDO PRA LISTAGEM)
-    ALT_TEXT_LOGO           VARCHAR(255) NULL,                                           -- ALT DO LOGO (RAPIDO PRA LISTAGEM)
-    STATUS                  TINYINT UNSIGNED NOT NULL DEFAULT 1,                         -- 1=ATIVO / 0=INATIVO
-    CREATED_AT              TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,                -- DATA CRIACAO
-    UPDATED_AT              TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- DATA UPDATE
-) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE=UTF8MB4_UNICODE_CI;
+CREATE TABLE lojas (
+    id_loja               BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nome                  VARCHAR(150) NOT NULL,
+    slug                  VARCHAR(160) NOT NULL,
+    titulo_pagina         VARCHAR(255) NOT NULL,
+    descricao_pagina      VARCHAR(255) NOT NULL,
+    url_site              VARCHAR(255) NULL,
+    url_base_afiliado     VARCHAR(255) NULL,
+    logo_image_link       VARCHAR(255) NULL,
+    alt_text_logo         VARCHAR(255) NULL,
+    status                TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    created_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================
--- RESTRICOES E INDICES: LOJAS
+-- INDICES: lojas
 -- =========================
-CREATE UNIQUE INDEX UQ_LOJAS_SLUG              ON LOJAS (SLUG);                          -- GARANTE URL UNICA
-CREATE INDEX IDX_LOJAS_STATUS                  ON LOJAS (STATUS);                        -- LISTAGEM DE LOJAS ATIVAS 
-CREATE INDEX IDX_LOJAS_NOME                    ON LOJAS (NOME);                          -- BUSCA / ORDENACAO POR NOME (OPCIONAL)
+CREATE UNIQUE INDEX uq_lojas_slug ON lojas (slug);
+CREATE INDEX idx_lojas_status ON lojas (status);
+CREATE INDEX idx_lojas_nome ON lojas (nome);
 
 -- =========================
--- TABELA: LOJAS_SEO (RELACAO 1:1 COM LOJAS)
+-- TABELA: lojas_seo (1:1 com lojas)
 -- =========================
-CREATE TABLE LOJAS_SEO (
-    ID_LOJA                 BIGINT UNSIGNED PRIMARY KEY,                                 -- PK = FK (GARANTE 1 SEO POR LOJA)
-    TITLE_SEO               TEXT NULL,                                                   -- TITLE SEO
-    DESCRIPTION_SEO         TEXT NULL,                                                   -- META DESCRIPTION
-    KEYWORDS_SEO            TEXT NULL,                                                   -- OPCIONAL (POUCO USADO HOJE)
-    TEXT_CONTENT_SEO        LONGTEXT NULL,                                               -- TEXTO LONGO (CONTEUDO SEO)
-    CREATED_AT              TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,                -- DATA CRIACAO
-    UPDATED_AT              TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- DATA UPDATE
-    CONSTRAINT FK_LOJAS_SEO_LOJAS
-        FOREIGN KEY (ID_LOJA) REFERENCES LOJAS(ID_LOJA) ON DELETE CASCADE                -- SE DELETAR LOJA, SOME SEO
-) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE=UTF8MB4_UNICODE_CI;
+CREATE TABLE lojas_seo (
+    id_loja               BIGINT UNSIGNED PRIMARY KEY,
+    title_seo             TEXT NULL,
+    description_seo       TEXT NULL,
+    keywords_seo          TEXT NULL,
+    text_content_seo      LONGTEXT NULL,
+    created_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_lojas_seo_lojas
+        FOREIGN KEY (id_loja) REFERENCES lojas(id_loja) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================
--- TABELA: CUPONS
+-- TABELA: cupons
 -- =========================
-CREATE TABLE CUPONS (
-    ID_CUPOM                BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,                 -- ID DO CUPOM
-    ID_LOJA                 BIGINT UNSIGNED NOT NULL,                                   -- ID DA LOJA
-    TITULO                  VARCHAR(255) NOT NULL,                                      -- TITULO DO CUPOM
-    DESCRICAO               TEXT NULL,                                                  -- DESCRICAO
-    REGRAS                  TEXT NULL,                                                  -- REGRAS
-    CODIGO                  VARCHAR(50) NULL,                                           -- CODIGO (SE FOR CUPOM DE CODIGO)
-    TIPO                    TINYINT UNSIGNED NOT NULL DEFAULT 1,                         -- 1=CODIGO / 2=OFERTA SEM CODIGO (SE QUISER)
-    LINK_REDIRECIONAMENTO   VARCHAR(255) NULL,                                          -- LINK DE AFILIADO (FINAL)
-    DATA_INICIO             DATE NULL,                                                  -- DATA DE INICIO (PROGRAMACAO)
-    DATA_EXPIRACAO          DATE NULL,                                                  -- DATA DE EXPIRACAO
-    STATUS                  TINYINT UNSIGNED NOT NULL DEFAULT 1,                         -- 1=ATIVO / 0=INATIVO
-    CREATED_AT              TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,                -- DATA CRIACAO
-    UPDATED_AT              TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- DATA UPDATE
-    CONSTRAINT FK_CUPONS_LOJAS
-        FOREIGN KEY (ID_LOJA) REFERENCES LOJAS(ID_LOJA) ON DELETE CASCADE                -- SE DELETAR LOJA, SOME CUPOM
-) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE=UTF8MB4_UNICODE_CI;
+CREATE TABLE cupons (
+    id_cupom              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_loja               BIGINT UNSIGNED NOT NULL,
+    titulo                VARCHAR(255) NOT NULL,
+    descricao             TEXT NULL,
+    regras                TEXT NULL,
+    codigo                VARCHAR(50) NULL,
+    tipo                  TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    link_redirecionamento VARCHAR(255) NULL,
+    data_inicio           DATE NULL,
+    data_expiracao        DATE NULL,
+    status                TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    created_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_cupons_lojas
+        FOREIGN KEY (id_loja) REFERENCES lojas(id_loja) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================
--- INDICES: CUPONS (FOCO EM CONSULTAS REAIS)
--- PADRAO COMUM: LISTAR CUPONS ATIVOS DE UMA LOJA, ORDENADOS POR PRIORIDADE E EXPIRACAO
+-- INDICES: cupons
 -- =========================
-CREATE INDEX IDX_CUPONS_LOJA_STATUS             ON CUPONS (ID_LOJA, STATUS);                -- LISTAGEM RAPIDA DA LOJA
-CREATE INDEX IDX_CUPONS_LOJA_EXPIRACAO          ON CUPONS (ID_LOJA, DATA_EXPIRACAO);        -- FILTRO POR EXPIRACAO POR LOJA
-CREATE INDEX IDX_CUPONS_STATUS_EXPIRACAO        ON CUPONS (STATUS, DATA_EXPIRACAO);         -- HOME / GERAL: ATIVOS E EXPIRANDO
-CREATE INDEX IDX_CUPONS_EXPIRACAO               ON CUPONS (DATA_EXPIRACAO);                 -- BUSCA POR EXPIRACAO (OPCIONAL)
-CREATE INDEX IDX_CUPONS_CODIGO                  ON CUPONS (CODIGO);                         -- BUSCA POR CODIGO (OPCIONAL)
+CREATE INDEX idx_cupons_loja_status ON cupons (id_loja, status);
+CREATE INDEX idx_cupons_loja_expiracao ON cupons (id_loja, data_expiracao);
+CREATE INDEX idx_cupons_status_expiracao ON cupons (status, data_expiracao);
+CREATE INDEX idx_cupons_expiracao ON cupons (data_expiracao);
+CREATE INDEX idx_cupons_codigo ON cupons (codigo);
 
 -- =========================
--- TABELA: OFERTAS
+-- TABELA: ofertas
 -- =========================
-CREATE TABLE OFERTAS (
-    ID_OFERTA               BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,                 -- ID DA OFERTA
-    ID_LOJA                 BIGINT UNSIGNED NOT NULL,                                   -- ID DA LOJA
-    TITULO                  VARCHAR(255) NOT NULL,                                      -- TITULO
-    DESCRICAO               TEXT NULL,                                                  -- DESCRICAO
-    LINK_OFERTA             VARCHAR(255) NOT NULL,                                      -- LINK DA OFERTA (AFILIADO OU NAO)
-    IMAGEM_OFERTA           VARCHAR(255) NULL,                                          -- LINK DA IMAGEM
-    DATA_INICIO             DATE NULL,                                                  -- DATA DE INICIO (PROGRAMACAO)
-    DATA_EXPIRACAO          DATE NULL,                                                  -- DATA DE EXPIRACAO
-    STATUS                  TINYINT UNSIGNED NOT NULL DEFAULT 1,                         -- 1=ATIVO / 0=INATIVO
-    CREATED_AT              TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,                -- DATA CRIACAO
-    UPDATED_AT              TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- DATA UPDATE
-    CONSTRAINT FK_OFERTAS_LOJAS
-        FOREIGN KEY (ID_LOJA) REFERENCES LOJAS(ID_LOJA) ON DELETE CASCADE                -- SE DELETAR LOJA, SOME OFERTA
-) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE=UTF8MB4_UNICODE_CI;
+CREATE TABLE ofertas (
+    id_oferta             BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_loja               BIGINT UNSIGNED NOT NULL,
+    titulo                VARCHAR(255) NOT NULL,
+    descricao             TEXT NULL,
+    link_oferta           VARCHAR(255) NOT NULL,
+    imagem_oferta         VARCHAR(255) NULL,
+    data_inicio           DATE NULL,
+    data_expiracao        DATE NULL,
+    status                TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    created_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_ofertas_lojas
+        FOREIGN KEY (id_loja) REFERENCES lojas(id_loja) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================
--- INDICES: OFERTAS
+-- INDICES: ofertas
 -- =========================
-CREATE INDEX IDX_OFERTAS_LOJA_STATUS            ON OFERTAS (ID_LOJA, STATUS);     -- LISTAGEM RAPIDA DA LOJA
-CREATE INDEX IDX_OFERTAS_LOJA_EXPIRACAO         ON OFERTAS (ID_LOJA, DATA_EXPIRACAO);    -- EXPIRACAO POR LOJA
-CREATE INDEX IDX_OFERTAS_STATUS_EXPIRACAO       ON OFERTAS (STATUS, DATA_EXPIRACAO);     -- HOME / GERAL
-CREATE INDEX IDX_OFERTAS_EXPIRACAO              ON OFERTAS (DATA_EXPIRACAO);             -- BUSCA POR EXPIRACAO (OPCIONAL)
+CREATE INDEX idx_ofertas_loja_status ON ofertas (id_loja, status);
+CREATE INDEX idx_ofertas_loja_expiracao ON ofertas (id_loja, data_expiracao);
+CREATE INDEX idx_ofertas_status_expiracao ON ofertas (status, data_expiracao);
+CREATE INDEX idx_ofertas_expiracao ON ofertas (data_expiracao);
 
 -- =========================
--- TABELA: CATEGORIAS
+-- TABELA: categorias
 -- =========================
-CREATE TABLE CATEGORIAS (
-    ID_CATEGORIA            BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,                 -- ID DA CATEGORIA
-    NOME                    VARCHAR(100) NOT NULL,                                      -- NOME
-    SLUG                    VARCHAR(120) NOT NULL                                       -- SLUG UNICO (EX.: ELETRONICOS)
-) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE=UTF8MB4_UNICODE_CI;
+CREATE TABLE categorias (
+    id_categoria          BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nome                  VARCHAR(100) NOT NULL,
+    slug                  VARCHAR(120) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================
--- INDICES: CATEGORIAS
+-- INDICES: categorias
 -- =========================
-CREATE UNIQUE INDEX UQ_CATEGORIAS_SLUG          ON CATEGORIAS (SLUG);                    -- SLUG UNICO
-CREATE INDEX IDX_CATEGORIAS_NOME               ON CATEGORIAS (NOME);                    -- BUSCA POR NOME (OPCIONAL)
+CREATE UNIQUE INDEX uq_categorias_slug ON categorias (slug);
+CREATE INDEX idx_categorias_nome ON categorias (nome);
 
 -- =========================
--- TABELA: LOJA_CATEGORIA (N:N)
+-- TABELA: loja_categoria (N:N)
 -- =========================
-CREATE TABLE LOJA_CATEGORIA (
-    ID_LOJA                 BIGINT UNSIGNED NOT NULL,                                   -- ID DA LOJA
-    ID_CATEGORIA            BIGINT UNSIGNED NOT NULL,                                   -- ID DA CATEGORIA
-    CREATED_AT              TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,               -- DATA CRIACAO (AJUDA EM AUDITORIA)
-    PRIMARY KEY (ID_LOJA, ID_CATEGORIA),                                                -- PK COMPOSTA
-    CONSTRAINT FK_LOJA_CATEGORIA_LOJAS
-        FOREIGN KEY (ID_LOJA) REFERENCES LOJAS(ID_LOJA) ON DELETE CASCADE,              -- REMOVE RELACOES AO DELETAR LOJA
-    CONSTRAINT FK_LOJA_CATEGORIA_CATEGORIAS
-        FOREIGN KEY (ID_CATEGORIA) REFERENCES CATEGORIAS(ID_CATEGORIA) ON DELETE CASCADE -- REMOVE RELACOES AO DELETAR CATEGORIA
-) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE=UTF8MB4_UNICODE_CI;
+CREATE TABLE loja_categoria (
+    id_loja               BIGINT UNSIGNED NOT NULL,
+    id_categoria          BIGINT UNSIGNED NOT NULL,
+    created_at            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_loja, id_categoria),
+    CONSTRAINT fk_loja_categoria_lojas
+        FOREIGN KEY (id_loja) REFERENCES lojas(id_loja) ON DELETE CASCADE,
+    CONSTRAINT fk_loja_categoria_categorias
+        FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================
--- INDICES: LOJA_CATEGORIA
+-- INDICES: loja_categoria
 -- =========================
-CREATE INDEX IDX_LOJA_CATEGORIA_CATEGORIA_LOJA  ON LOJA_CATEGORIA (ID_CATEGORIA, ID_LOJA); -- BUSCA POR CATEGORIA -> LOJAS
-
+CREATE INDEX idx_loja_categoria_categoria_loja ON loja_categoria (id_categoria, id_loja);

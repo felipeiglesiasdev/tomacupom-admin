@@ -17,16 +17,16 @@ class LojaSeo extends Model
     protected $connection = 'mysql_dados';
 
     // ===================================================
-    // DEFINICAO DA TABELA (CASE SENSITIVE)
+    // DEFINICAO DA TABELA 
     // ===================================================
 
-    protected $table = 'LOJAS_SEO';
+    protected $table = 'lojas_seo';
 
     // ===================================================
     // CHAVE PRIMARIA (PK = FK)
     // ===================================================
 
-    protected $primaryKey = 'ID_LOJA';
+    protected $primaryKey = 'id_loja';
 
     // ===================================================
     // NAO E AUTO INCREMENT (PK VEM DA LOJA)
@@ -39,11 +39,11 @@ class LojaSeo extends Model
     // ===================================================
 
     protected $fillable = [
-        'ID_LOJA',
-        'TITLE_SEO',
-        'DESCRIPTION_SEO',
-        'KEYWORDS_SEO',
-        'TEXT_CONTENT_SEO',
+        'id_loja',
+        'title_seo',
+        'description_seo',
+        'keywords_seo',
+        'text_content_seo',
     ];
 
     // ===================================================
@@ -54,8 +54,8 @@ class LojaSeo extends Model
     {
         return $this->belongsTo(
             Loja::class,
-            'ID_LOJA',
-            'ID_LOJA'
+            'id_loja',
+            'id_loja'
         );
     }
 }

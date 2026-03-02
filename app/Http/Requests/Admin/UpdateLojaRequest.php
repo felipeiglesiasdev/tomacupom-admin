@@ -18,7 +18,7 @@ class UpdateLojaRequest extends FormRequest
 
         return [
             'nome' => ['required', 'string', 'max:150'],
-            'slug' => ['required', 'string', 'max:160', Rule::unique('mysql_app.lojas', 'slug')->ignore($loja?->id_loja, 'id_loja')],
+            'slug' => ['required', 'string', 'max:160', Rule::unique('mysql_dados.lojas', 'slug')->ignore($loja?->id_loja, 'id_loja')],
             'titulo_pagina' => ['required', 'string', 'max:255'],
             'descricao_pagina' => ['required', 'string', 'max:255'],
             'url_site' => ['nullable', 'url', 'max:255'],

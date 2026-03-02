@@ -18,17 +18,17 @@ class LojaCategoriaController extends Controller
     public function edit(Loja $loja): View
     {
         // ===================================================
-        // CARREGAR CATEGORIAS DA LOJA (COLUNAS EM MAIUSCULO)
+        // CARREGAR CATEGORIAS DA LOJA
         // ===================================================
 
-        $loja->load('categorias:ID_CATEGORIA,NOME');
+        $loja->load('categorias:id_categoria,nome');
 
         // ===================================================
         // LISTAR TODAS AS CATEGORIAS PARA SELECAO
         // ===================================================
 
         $categorias = Categoria::query()
-            ->select(['ID_CATEGORIA', 'NOME'])
+            ->select(['id_categoria', 'nome'])
             ->ordenadas()
             ->get();
 
@@ -45,15 +45,10 @@ class LojaCategoriaController extends Controller
     public function update(UpdateLojaCategoriasRequest $request, Loja $loja): RedirectResponse
     {
         // ===================================================
-        // SINCRONIZAR IDS DE CATEGORIAS (ARRAY DE ID_CATEGORIA)
+        // SINCRONIZAR IDS DE CATEGORIAS
         // ===================================================
 
         $ids = $request->validated('categorias', []);
-
-        // ===================================================
-        // SYNC NA PIVOT LOJA_CATEGORIA
-        // OBS: RELACIONAMENTO NAO DEVE TER withTimestamps() SE A PIVOT NAO TEM UPDATED_AT
-        // ===================================================
 
         $loja->categorias()->sync($ids);
 

@@ -22,14 +22,14 @@ class CupomController extends Controller
     public function index(Request $request): View
     {
         // ===================================================
-        // QUERY BASE (COLUNAS EM MAIUSCULO POR CAUSA DO BANCO)
+        // QUERY BASE
         // ===================================================
 
         $query = Cupom::query()
-            ->select(['ID_CUPOM', 'ID_LOJA', 'TITULO', 'CODIGO', 'STATUS', 'DATA_EXPIRACAO'])
+            ->select(['id_cupom', 'id_loja', 'titulo', 'codigo', 'status', 'data_expiracao'])
             ->with([
                 'loja' => function (Builder $lojaQuery): void {
-                    $lojaQuery->select(['ID_LOJA', 'NOME']);
+                    $lojaQuery->select(['id_loja', 'nome']);
                 },
             ])
             ->ordenadas();
@@ -39,7 +39,7 @@ class CupomController extends Controller
         // ===================================================
 
         if ($request->filled('id_loja')) {
-            $query->where('ID_LOJA', (int) $request->input('id_loja'));
+            $query->where('id_loja', (int) $request->input('id_loja'));
         }
 
         // ===================================================
@@ -47,7 +47,7 @@ class CupomController extends Controller
         // ===================================================
 
         if ($request->filled('status')) {
-            $query->where('STATUS', (int) $request->input('status'));
+            $query->where('status', (int) $request->input('status'));
         }
 
         // ===================================================
@@ -57,11 +57,11 @@ class CupomController extends Controller
         $expiracao = (string) $request->input('expiracao', '');
 
         if ($expiracao === 'hoje') {
-            $query->whereDate('DATA_EXPIRACAO', now()->toDateString());
+            $query->whereDate('data_expiracao', now()->toDateString());
         }
 
         if ($expiracao === '7dias') {
-            $query->whereBetween('DATA_EXPIRACAO', [
+            $query->whereBetween('data_expiracao', [
                 now()->toDateString(),
                 now()->addDays(7)->toDateString(),
             ]);
@@ -72,7 +72,7 @@ class CupomController extends Controller
         // ===================================================
 
         $lojas = Loja::query()
-            ->select(['ID_LOJA', 'NOME'])
+            ->select(['id_loja', 'nome'])
             ->ordenadas()
             ->get();
 
@@ -89,7 +89,7 @@ class CupomController extends Controller
     public function create(): View
     {
         return view('cupons.create', [
-            'lojas' => Loja::query()->select(['ID_LOJA', 'NOME'])->ordenadas()->get(),
+            'lojas' => Loja::query()->select(['id_loja', 'nome'])->ordenadas()->get(),
         ]);
     }
 
@@ -99,10 +99,6 @@ class CupomController extends Controller
 
     public function store(StoreCupomRequest $request): RedirectResponse
     {
-        // ===================================================
-        // REQUEST DEVE RETORNAR CHAVES EM MAIUSCULO (EX.: ID_LOJA, TITULO, ETC.)
-        // ===================================================
-
         Cupom::query()->create($request->validated());
 
         return redirect()
@@ -118,7 +114,7 @@ class CupomController extends Controller
     {
         return view('cupons.edit', [
             'cupom' => $cupom,
-            'lojas' => Loja::query()->select(['ID_LOJA', 'NOME'])->ordenadas()->get(),
+            'lojas' => Loja::query()->select(['id_loja', 'nome'])->ordenadas()->get(),
         ]);
     }
 
@@ -154,30 +150,21 @@ class CupomController extends Controller
 
     public function duplicate(Cupom $cupom): RedirectResponse
     {
-        // ===================================================
-        // TRANSACAO NA CONEXAO CORRETA (MYSQL_DADOS)
-        // ===================================================
-
         DB::connection('mysql_dados')->transaction(function () use ($cupom): void {
-            // ===================================================
-            // CLONAR REGISTRO
-            // ===================================================
-
             $copy = $cupom->replicate();
 
             // ===================================================
             // AJUSTES DO CLONE
             // ===================================================
 
-            $copy->TITULO = $cupom->TITULO . ' (COPIA)';
-            $copy->CLIQUES = 0;
+            $copy->titulo = $cupom->titulo . ' (copia)';
 
             // ===================================================
-            // GARANTIR TIMESTAMPS (COLUNAS EM MAIUSCULO)
+            // GARANTIR TIMESTAMPS
             // ===================================================
 
-            $copy->CREATED_AT = now();
-            $copy->UPDATED_AT = now();
+            $copy->created_at = now();
+            $copy->updated_at = now();
 
             $copy->save();
         });

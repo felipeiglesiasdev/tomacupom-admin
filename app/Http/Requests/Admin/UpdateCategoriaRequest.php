@@ -18,7 +18,7 @@ class UpdateCategoriaRequest extends FormRequest
 
         return [
             'nome' => ['required', 'string', 'max:100'],
-            'slug' => ['required', 'string', 'max:120', Rule::unique('mysql_app.categorias', 'slug')->ignore($categoria?->id_categoria, 'id_categoria')],
+            'slug' => ['required', 'string', 'max:120', Rule::unique('mysql_dados.categorias', 'slug')->ignore($categoria?->id_categoria, 'id_categoria')],
         ];
     }
 }

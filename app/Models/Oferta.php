@@ -18,30 +18,30 @@ class Oferta extends Model
     protected $connection = 'mysql_dados';
 
     // ===================================================
-    // DEFINICAO DA TABELA (CASE SENSITIVE)
+    // DEFINICAO DA TABELA
     // ===================================================
 
-    protected $table = 'OFERTAS';
+    protected $table = 'ofertas';
 
     // ===================================================
     // CHAVE PRIMARIA PERSONALIZADA
     // ===================================================
 
-    protected $primaryKey = 'ID_OFERTA';
+    protected $primaryKey = 'id_oferta';
 
     // ===================================================
     // CAMPOS ATRIBUIVEIS EM MASSA
     // ===================================================
 
     protected $fillable = [
-        'ID_LOJA',
-        'TITULO',
-        'DESCRICAO',
-        'LINK_OFERTA',
-        'IMAGEM_OFERTA',
-        'DATA_INICIO',
-        'DATA_EXPIRACAO',
-        'STATUS',
+        'id_loja',
+        'titulo',
+        'descricao',
+        'link_oferta',
+        'imagem_oferta',
+        'data_inicio',
+        'data_expiracao',
+        'status',
     ];
 
     // ===================================================
@@ -52,8 +52,8 @@ class Oferta extends Model
     {
         return $this->belongsTo(
             Loja::class,
-            'ID_LOJA',
-            'ID_LOJA'
+            'id_loja',
+            'id_loja'
         );
     }
 
@@ -63,7 +63,7 @@ class Oferta extends Model
 
     public function scopeAtivas(Builder $query): Builder
     {
-        return $query->where('STATUS', 1);
+        return $query->where('status', 1);
     }
 
     // ===================================================
@@ -74,8 +74,8 @@ class Oferta extends Model
     {
         return $query->where(function (Builder $inner): void {
             $inner
-                ->whereNull('DATA_EXPIRACAO')
-                ->orWhereDate('DATA_EXPIRACAO', '>=', now()->toDateString());
+                ->whereNull('data_expiracao')
+                ->orWhereDate('data_expiracao', '>=', now()->toDateString());
         });
     }
 
@@ -85,7 +85,8 @@ class Oferta extends Model
 
     public function scopeExpiradas(Builder $query): Builder
     {
-        return $query->whereDate('DATA_EXPIRACAO', '<', now()->toDateString());
+        return $query->whereNotNull('data_expiracao')
+            ->whereDate('data_expiracao', '<', now()->toDateString());
     }
 
     // ===================================================
@@ -94,6 +95,6 @@ class Oferta extends Model
 
     public function scopeOrdenadas(Builder $query): Builder
     {
-        return $query->orderByDesc('CREATED_AT');
+        return $query->orderByDesc('created_at');
     }
 }

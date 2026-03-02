@@ -18,32 +18,32 @@ class Cupom extends Model
     protected $connection = 'mysql_dados';
 
     // ===================================================
-    // DEFINICAO DA TABELA (CASE SENSITIVE)
+    // DEFINICAO DA TABELA
     // ===================================================
 
-    protected $table = 'CUPONS';
+    protected $table = 'cupons';
 
     // ===================================================
     // CHAVE PRIMARIA PERSONALIZADA
     // ===================================================
 
-    protected $primaryKey = 'ID_CUPOM';
+    protected $primaryKey = 'id_cupom';
 
     // ===================================================
     // CAMPOS ATRIBUIVEIS EM MASSA
     // ===================================================
 
     protected $fillable = [
-        'ID_LOJA',
-        'TITULO',
-        'DESCRICAO',
-        'REGRAS',
-        'CODIGO',
-        'TIPO',
-        'LINK_REDIRECIONAMENTO',
-        'DATA_INICIO',
-        'DATA_EXPIRACAO',
-        'STATUS',
+        'id_loja',
+        'titulo',
+        'descricao',
+        'regras',
+        'codigo',
+        'tipo',
+        'link_redirecionamento',
+        'data_inicio',
+        'data_expiracao',
+        'status',
     ];
 
     // ===================================================
@@ -54,8 +54,8 @@ class Cupom extends Model
     {
         return $this->belongsTo(
             Loja::class,
-            'ID_LOJA',
-            'ID_LOJA'
+            'id_loja',
+            'id_loja'
         );
     }
 
@@ -65,7 +65,7 @@ class Cupom extends Model
 
     public function scopeAtivas(Builder $query): Builder
     {
-        return $query->where('STATUS', 1);
+        return $query->where('status', 1);
     }
 
     // ===================================================
@@ -76,8 +76,8 @@ class Cupom extends Model
     {
         return $query->where(function (Builder $inner): void {
             $inner
-                ->whereNull('DATA_EXPIRACAO')
-                ->orWhereDate('DATA_EXPIRACAO', '>=', now()->toDateString());
+                ->whereNull('data_expiracao')
+                ->orWhereDate('data_expiracao', '>=', now()->toDateString());
         });
     }
 
@@ -87,7 +87,8 @@ class Cupom extends Model
 
     public function scopeExpiradas(Builder $query): Builder
     {
-        return $query->whereDate('DATA_EXPIRACAO', '<', now()->toDateString());
+        return $query->whereNotNull('data_expiracao')
+            ->whereDate('data_expiracao', '<', now()->toDateString());
     }
 
     // ===================================================
@@ -96,6 +97,6 @@ class Cupom extends Model
 
     public function scopeOrdenadas(Builder $query): Builder
     {
-        return $query->orderByDesc('CREATED_AT');
+        return $query->orderByDesc('created_at');
     }
 }

@@ -15,7 +15,7 @@ class StoreCategoriaRequest extends FormRequest
     {
         return [
             'nome' => ['required', 'string', 'max:100'],
-            'slug' => ['required', 'string', 'max:120', 'unique:mysql_app.categorias,slug'],
+            'slug' => ['required', 'string', 'max:120', 'unique:mysql_dados.categorias,slug'],
         ];
     }
 }

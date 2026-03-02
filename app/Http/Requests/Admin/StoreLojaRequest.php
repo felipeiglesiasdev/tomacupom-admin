@@ -15,7 +15,7 @@ class StoreLojaRequest extends FormRequest
     {
         return [
             'nome' => ['required', 'string', 'max:150'],
-            'slug' => ['required', 'string', 'max:160', 'unique:mysql_app.lojas,slug'],
+            'slug' => ['required', 'string', 'max:160', 'unique:mysql_dados.lojas,slug'],
             'titulo_pagina' => ['required', 'string', 'max:255'],
             'descricao_pagina' => ['required', 'string', 'max:255'],
             'url_site' => ['nullable', 'url', 'max:255'],

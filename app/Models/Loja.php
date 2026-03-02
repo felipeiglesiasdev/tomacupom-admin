@@ -20,31 +20,31 @@ class Loja extends Model
     protected $connection = 'mysql_dados';
 
     // ===================================================
-    // DEFINICAO DA TABELA (CASE SENSITIVE)
+    // DEFINICAO DA TABELA
     // ===================================================
 
-    protected $table = 'LOJAS';
+    protected $table = 'lojas';
 
     // ===================================================
     // CHAVE PRIMARIA PERSONALIZADA
     // ===================================================
 
-    protected $primaryKey = 'ID_LOJA';
+    protected $primaryKey = 'id_loja';
 
     // ===================================================
     // CAMPOS ATRIBUIVEIS EM MASSA
     // ===================================================
 
     protected $fillable = [
-        'NOME',
-        'SLUG',
-        'TITULO_PAGINA',
-        'DESCRICAO_PAGINA',
-        'URL_SITE',
-        'URL_BASE_AFILIADO',
-        'LOGO_IMAGE_LINK',
-        'ALT_TEXT_LOGO',
-        'STATUS',
+        'nome',
+        'slug',
+        'titulo_pagina',
+        'descricao_pagina',
+        'url_site',
+        'url_base_afiliado',
+        'logo_image_link',
+        'alt_text_logo',
+        'status',
     ];
 
     // ===================================================
@@ -55,8 +55,8 @@ class Loja extends Model
     {
         return $this->hasOne(
             LojaSeo::class,
-            'ID_LOJA',
-            'ID_LOJA'
+            'id_loja',
+            'id_loja'
         );
     }
 
@@ -64,8 +64,8 @@ class Loja extends Model
     {
         return $this->hasMany(
             Cupom::class,
-            'ID_LOJA',
-            'ID_LOJA'
+            'id_loja',
+            'id_loja'
         );
     }
 
@@ -73,19 +73,24 @@ class Loja extends Model
     {
         return $this->hasMany(
             Oferta::class,
-            'ID_LOJA',
-            'ID_LOJA'
+            'id_loja',
+            'id_loja'
         );
     }
+
+    // ===================================================
+    // RELACIONAMENTO N:N COM CATEGORIAS
+    // OBS: NAO USAR withTimestamps() POIS A PIVOT TEM APENAS created_at
+    // ===================================================
 
     public function categorias(): BelongsToMany
     {
         return $this->belongsToMany(
             Categoria::class,
-            'LOJA_CATEGORIA',
-            'ID_LOJA',
-            'ID_CATEGORIA'
-        )->withTimestamps();
+            'loja_categoria',
+            'id_loja',
+            'id_categoria'
+        );
     }
 
     // ===================================================
@@ -94,11 +99,11 @@ class Loja extends Model
 
     public function scopeAtivas(Builder $query): Builder
     {
-        return $query->where('STATUS', 1);
+        return $query->where('status', 1);
     }
 
     public function scopeOrdenadas(Builder $query): Builder
     {
-        return $query->orderBy('NOME');
+        return $query->orderBy('nome');
     }
 }
