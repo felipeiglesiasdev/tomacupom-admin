@@ -26,7 +26,7 @@ class CupomController extends Controller
         // ===================================================
 
         $query = Cupom::query()
-            ->select(['id_cupom', 'id_loja', 'titulo', 'codigo', 'status', 'data_expiracao'])
+            ->select(['id_cupom', 'id_loja', 'titulo', 'codigo', 'status', 'data_expiracao', 'tipo', 'descricao', 'regras', 'link_redirecionamento', 'data_inicio'])
             ->with([
                 'loja' => function (Builder $lojaQuery): void {
                     $lojaQuery->select(['id_loja', 'nome']);

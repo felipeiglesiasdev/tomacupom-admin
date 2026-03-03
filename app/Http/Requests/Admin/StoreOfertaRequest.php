@@ -14,10 +14,10 @@ class StoreOfertaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id_loja' => ['required', 'exists:mysql_app.lojas,id_loja'],
+            'id_loja' => ['required', 'exists:mysql_dados.lojas,id_loja'],
             'titulo' => ['required', 'string', 'max:255'],
             'descricao' => ['nullable', 'string'],
-            'link_oferta' => ['required', 'url', 'max:255'],
+            'link_oferta' => ['required', 'url', 'string'],
             'imagem_oferta' => ['nullable', 'url', 'max:255'],
             'data_inicio' => ['nullable', 'date'],
             'data_expiracao' => ['nullable', 'date', 'after_or_equal:data_inicio'],

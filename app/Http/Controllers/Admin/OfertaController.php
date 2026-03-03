@@ -24,7 +24,7 @@ class OfertaController extends Controller
         // ===================================================
 
         $query = Oferta::query()
-            ->select(['id_oferta', 'id_loja', 'titulo', 'status', 'data_expiracao'])
+            ->select(['id_oferta', 'id_loja', 'titulo', 'status', 'data_expiracao', 'descricao', 'link_oferta', 'imagem_oferta', 'data_inicio'])
             ->with('loja:id_loja,nome')
             ->ordenadas();
 
